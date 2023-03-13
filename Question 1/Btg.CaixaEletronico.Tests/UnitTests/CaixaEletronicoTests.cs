@@ -87,5 +87,22 @@ namespace Btg.CaixaEletronico.Tests
             notas[Notas.VINTE].Should().Be(1);
             notas[Notas.DEZ].Should().Be(1);
         }
+
+        [Fact]
+        public void Sacar_DeveTentarProcurarSeHaNotasComMontanteTotalIgualSaque_QuandoBuscaPorQuantidadeMinimaDeNotasNaoForBemSucedida()
+        {
+            //Arrange
+            var caixa = new CaixaEletronico.Entities.CaixaEletronico();
+            caixa.AdicionarNotas(Notas.CEM, 0);
+            caixa.AdicionarNotas(Notas.CINQUENTA, 1);
+            caixa.AdicionarNotas(Notas.VINTE, 4);
+            caixa.AdicionarNotas(Notas.DEZ, 0);
+
+            //Act
+            var notas = caixa.Sacar(80);
+
+            //Assert
+            notas[Notas.VINTE].Should().Be(4);
+        }
     }
 }

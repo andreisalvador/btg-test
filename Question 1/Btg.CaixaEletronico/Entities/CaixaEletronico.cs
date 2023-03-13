@@ -60,21 +60,38 @@ namespace Btg.CaixaEletronico.Entities
 
         private Dictionary<int, int> BuscarNotas(int valor)
         {
-            var notasDisponiveis = _notasDoCaixaEletronico.Where(nota => nota.Value > 0).Select(nota => nota.Key).ToList();
+            var notasDisponiveisNoCaixa = _notasDoCaixaEletronico.Where(nota => nota.Value > 0).Select(nota => nota.Key).ToList();
             var notas = new Dictionary<int, int>();
 
             int valorRestante = valor;
-            int indexNotaInicial = 0;
+            int indexNota = 0;
 
             while (valorRestante != 0)
             {
-                if(notasDisponiveis.Count == indexNotaInicial)
-                    throw new InvalidOperationException($"O caixa não possui notas o suficiente para o saque do valor {valor:C}");
+                if (notasDisponiveisNoCaixa.Count == indexNota)
+                {
+                    DescobrirNotaQueCompoemValorTotalSaque(valor, notasDisponiveisNoCaixa, notas);
+                    break;
+                }
 
-                valorRestante = DescobrirMenorQuantidadeNotasPossivelPorNota(valorRestante, notasDisponiveis[indexNotaInicial++], notas);
+                valorRestante = DescobrirMenorQuantidadeNotasPossivelPorNota(valorRestante, notasDisponiveisNoCaixa[indexNota++], notas);
             }
 
             return notas;
+        }
+
+
+        private void DescobrirNotaQueCompoemValorTotalSaque(int valor, List<int> notasDisponiveisNoCaixa, Dictionary<int, int> notas)
+        {
+            var unicaQuantidadePossivelParaValor = _notasDoCaixaEletronico.Where(nota => notasDisponiveisNoCaixa.Contains(nota.Key) && (nota.Key * nota.Value) == valor).FirstOrDefault();
+
+            if (unicaQuantidadePossivelParaValor.Key == 0)
+                throw new InvalidOperationException($"O caixa não possui notas o suficiente para o saque do valor {valor:C}");
+            else
+            {
+                notas.Clear();
+                notas.Add(unicaQuantidadePossivelParaValor.Key, unicaQuantidadePossivelParaValor.Value);
+            }
         }
 
         private int DescobrirMenorQuantidadeNotasPossivelPorNota(int valor, int nota, Dictionary<int, int> notas)

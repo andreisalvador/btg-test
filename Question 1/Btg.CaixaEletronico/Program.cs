@@ -4,12 +4,9 @@
 using Btg.CaixaEletronico.Entities;
 
 var caixaEletronico = new CaixaEletronico();
-Console.WriteLine(caixaEletronico);
 
 EncherCaixaEletronico(caixaEletronico);
 Console.Clear();
-
-Console.WriteLine(caixaEletronico);
 
 Console.WriteLine("Informe o valor do saque: ");
 
