@@ -1,0 +1,4 @@
+SELECT ReportsTo, count(1) as NumberOfReports, CAST(AVG(Age) as INTEGER) as MemberAgeAverage FROM reports 
+WHERE ReportsTo IS NOT NULL 
+GROUP by ReportsTo
+ORDER BY ReportsTo DESC;

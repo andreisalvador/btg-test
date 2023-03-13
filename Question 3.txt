@@ -1,0 +1,9 @@
+1 - SELECT v.placa, c.nome FROM Veiculo v
+    INNER JOIN Cliente c ON v.Cliente_cpf = c.cpf;
+
+
+
+2- SELECT p.ender, e.dtEntrada, e.dtSaida FROM Estaciona e
+   INNER JOIN Veiculo v ON v.placa = e.Veiculo_placa
+   INNER JOIN Patio p ON p.num = e.Patio_num
+   WHERE v.placa = 'BTG-2022'
