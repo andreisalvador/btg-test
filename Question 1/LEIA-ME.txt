@@ -1,0 +1,3 @@
+Algumas observações:
+- Não lançaria exeções na etidade de dominimo, muito possivelmente usaria o notification pattern. Pois se você espera uma situação, ela não é uma exceção (exception).
+- SEMPRE programo em inglês, mas a nível de facil leitura de qualquer pessoa, fiz em português.
